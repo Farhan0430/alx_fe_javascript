@@ -30,10 +30,8 @@ function populateCategories() {
     option.value = category;
     option.textContent = category;
     categoryFilter.appendChild(option);
-  }
+  });
 
-  // Restore last selected filter if it exists
-  );
   const lastFilter = localStorage.getItem("lastSelectedFilter");
   if (lastFilter) {
     categoryFilter.value = lastFilter;
@@ -42,12 +40,12 @@ function populateCategories() {
 
 // Filter quotes by selected category
 function filterQuotes() {
-  const category = document.getElementById("categoryFilter").value;
-  localStorage.setItem("lastSelectedFilter", category);
+  const selectedCategory = document.getElementById("categoryFilter").value;
+  localStorage.setItem("lastSelectedFilter", selectedCategory);
 
-  const filtered = category === "all"
+  const filtered = selectedCategory === "all"
     ? quotes
-    : quotes.filter(q => q.category === category);
+    : quotes.filter(q => q.category === selectedCategory);
 
   const display = document.getElementById("quoteDisplay");
 
@@ -61,7 +59,7 @@ function filterQuotes() {
   }
 }
 
-// Show any random quote regardless of filter
+// Show a completely random quote
 function showRandomQuote() {
   const display = document.getElementById("quoteDisplay");
 
@@ -92,7 +90,7 @@ function addQuote() {
   quotes.push({ text, category });
   saveQuotes();
   populateCategories();
-  filterQuotes(); // refresh filtered view
+  filterQuotes(); // Refresh filtered view
   textInput.value = "";
   categoryInput.value = "";
   alert("Quote added successfully!");
@@ -164,13 +162,13 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// Initialize
+// Initialization
 loadQuotes();
 populateCategories();
 createAddQuoteForm();
-filterQuotes(); // load based on last filter
+filterQuotes();
 
-// Restore last viewed quote if exists
+// Restore last viewed quote
 const lastViewed = sessionStorage.getItem("lastViewedQuote");
 if (lastViewed) {
   document.getElementById("quoteDisplay").textContent = lastViewed;
