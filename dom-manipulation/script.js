@@ -152,7 +152,7 @@ function importFromJsonFile(event) {
 
 // ========== Server Sync Logic ==========
 
-// Renamed as per auto-checker requirement
+// Fetch quotes from server (mock)
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
@@ -207,6 +207,26 @@ function startAutoSync() {
   setInterval(syncNow, 30000); // every 30 seconds
 }
 
+// POST quotes to server (mock)
+async function postQuotesToServer() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(quotes)
+    });
+    if (!response.ok) throw new Error('Network response was not ok');
+    const data = await response.json();
+    showNotification("Quotes posted to server successfully!");
+    return data;
+  } catch (error) {
+    showNotification("Failed to post quotes to server.", true);
+  }
+}
+
+// ========== Init ==========
 
 loadQuotes();
 populateCategories();
@@ -222,4 +242,5 @@ document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 document.getElementById("exportBtn").addEventListener("click", exportToJson);
 document.getElementById("importFile").addEventListener("change", importFromJsonFile);
 document.getElementById("syncBtn").addEventListener("click", syncNow);
+document.getElementById("postBtn").addEventListener("click", postQuotesToServer);
 startAutoSync();
