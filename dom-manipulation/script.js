@@ -185,7 +185,7 @@ function syncQuotesWithServer(serverQuotes) {
     saveQuotes();
     populateCategories();
     filterQuotes();
-    showNotification("Synced with server. New quotes added.");
+    showNotification("Quotes synced with server!");
   } else {
     showNotification("No new quotes from server.");
   }
